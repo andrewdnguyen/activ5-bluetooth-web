@@ -89,7 +89,7 @@ this.A5Device.disconnect();
 
 ## Author
 
-ivo.zhulev@gmail.com
+h3trika ivo.zhulev@gmail.com
 
 ## License
 
