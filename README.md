@@ -1,9 +1,6 @@
 # Activ5-Device
 
-[![CI Status](https://img.shields.io/travis/starbuckbg/Activ5-Device.svg?style=flat)](https://travis-ci.org/starbuckbg/Activ5-Device)
-[![Version](https://img.shields.io/cocoapods/v/Activ5-Device.svg?style=flat)](https://cocoapods.org/pods/Activ5-Device)
-[![License](https://img.shields.io/cocoapods/l/Activ5-Device.svg?style=flat)](https://cocoapods.org/pods/Activ5-Device)
-[![Platform](https://img.shields.io/cocoapods/p/Activ5-Device.svg?style=flat)](https://cocoapods.org/pods/Activ5-Device)
+[![npm](https://img.shields.io/npm/v/jqwidgets-scripts.svg?colorB=brightgreen)](https://www.npmjs.com/package/activ5-device)
 
 ## Example
 
