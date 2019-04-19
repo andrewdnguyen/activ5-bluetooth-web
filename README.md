@@ -8,7 +8,7 @@ To run the example project clone the repo and run `npm install` from the Example
 
 ## Requirements
 
-Activ5-Device is a [Angular](https://angular.io) library and a [Angular](https://angular.io) based project is required to run it.
+Activ5-Device is an [Angular](https://angular.io) library and an [Angular](https://angular.io) based project is required to run it.
 
 ## Installation
 
@@ -29,7 +29,7 @@ In order to initialize the framework you need to import it in the desired **Comp
 import { A5DeviceManager } from 'Activ5-Device';
 ```
 
-As this is a **Angular Service** you need also to inject it:
+As this is an **Angular Service** you need also to inject it.
 
 ```typescript
 constructor(private A5Device: A5DeviceManager ) { }
@@ -52,12 +52,12 @@ this.A5Device.getDevice().subscribe(device => {
 ```
 
 ### Request Isometric Data from the A5 device
-Isometric data start to be stream when `requestIsom()` is called.
+Isometric data start to be stream when `startIsometric()` function is called.
 ```typescript
 this.A5Device.startIsometric();
 ```
 
-The isometric data is going to be received in the observable function `getISOMData`. The data received is in **Newtons**.
+The isometric data is going to be received in the observable function `getIsometricData()`. The data received is in **Newtons**.
 ```typescript
 this.A5Device.getIsometricData().subscribe(data => {
   // do something with the data received
@@ -65,12 +65,12 @@ this.A5Device.getIsometricData().subscribe(data => {
 ```
 
 ### Stop receiving isometric data
-In order to save device battery it is recomended to call `requestStop()` function. That way the device consumption drops to a minimum while still is being connected. 
+In order to save device battery it is recomended to call `stop()` function. That way the device consumption drops to a minimum while still is being connected. 
 
 ```typescript
 this.A5Device.stop();
 ```
-_NB: After 7 minutes in `stop mode` the device will switch switch off_
+_NB: After 7 minutes in `stop mode` the device will switch switch off_ .
 If you don't want the device to timeout after 7 minutes you can switch on evergreen mode. This will keep the device awake.
 
 ```typescript
@@ -84,7 +84,7 @@ this.A5Device.tare();
 ```
 
 ### Disconnect device
-Disconnecting the device happens with calling `disconnect()` function
+Disconnecting the device happens with calling `disconnect()` function.
 ```typescript 
 this.A5Device.disconnect();
 ```
