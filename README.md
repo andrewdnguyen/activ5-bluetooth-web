@@ -20,8 +20,6 @@ npm install activ5-device
 
 # Use of framework
 
-## Basic funtionality
-
 ### Framework initialisation
 In order to initialize the framework you need to import it in the desired **Component**.
 
