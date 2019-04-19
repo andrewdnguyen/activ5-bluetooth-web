@@ -24,7 +24,7 @@ npm install activ5-device
 In order to initialize the framework you need to import it in the desired **Component**.
 
 ```typescript
-import { A5DeviceManager } from 'Activ5-Device';
+import { A5DeviceManager } from 'activ5-device';
 ```
 
 As this is an **Angular Service** you need also to inject it.
