@@ -4,7 +4,7 @@
 
 ## Example
 
-To run the example project clone the repo and run `npm install` from the Example directory first.
+To run the example project clone the repo and run `npm install` and then `npm start` from the Example directory first.
 
 ## Requirements
 
