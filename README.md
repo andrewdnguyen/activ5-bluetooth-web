@@ -1,7 +1,5 @@
 # Activ5-Device
 
-[![npm](https://img.shields.io/npm/v/activ5-device.svg?colorB=brightgreen)](https://www.npmjs.com/package/activ5-device)
-
 ## Example
 
 To run the example project clone the repo and run `npm install` and then `npm start` from the **Example** directory.
@@ -15,7 +13,7 @@ Activ5-Device is an [Angular](https://angular.io) library and an [Angular](https
 Activ5-Device is available through [npm](https://www.npmjs.com).
 
 ```typescript
-npm install activ5-device
+npm install @h3trika/activ5-device
 ```
 
 # Use of framework

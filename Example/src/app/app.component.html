@@ -1,0 +1,22 @@
+<div class="container">
+  
+      <div *ngIf="device" class="data-container">
+          <p>{{deviceName}}</p>
+          <p>IS{{isomData}}</p>
+      </div>
+  
+      <!-- Scanning For Devices Button -->
+      <button *ngIf="!device" (click)="connect()">Search for devices</button>
+  
+      <!-- Function Buttons -->
+      <button *ngIf="device" (click)="startIsometric()">Request Isometric</button>
+      <button *ngIf="device" (click)="tare()">Request Tare</button>
+      <button *ngIf="device" (click)="stop()">Request Stop</button>
+      <button *ngIf="device" (click)="isEvergreenMode = !isEvergreenMode; evergreenMode()">
+          {{isEvergreenMode ? 'Swith Off Evergreen' : 'Swith On Evergreen'}}
+      </button>
+      <button *ngIf="device" (click)="disconnect()">Disconnect</button>
+  
+  </div>
+  
+  

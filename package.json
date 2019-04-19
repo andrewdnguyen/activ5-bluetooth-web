@@ -1,5 +1,7 @@
 {
-    "name": "Activ5-Device",
+    "name": "@h3trika/activ5-device",
+    "author": "Ivo Zhulev",
+    "version": "0.0.5",
     "scripts": {
         "start": "ng-packagr"
     },
