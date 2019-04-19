@@ -37,7 +37,6 @@ export class A5DeviceManager {
 
   private isomDataAsObservable = new Subject<string>();
 
-  private isEvergreenMode = false;
   private evergreenModeTimer: number;
   private characteristics = new Map();
   private deviceState = DeviceState.disconnected;
@@ -46,7 +45,7 @@ export class A5DeviceManager {
     return this.deviceAsObservable.asObservable();
   }
 
-  public getISOMData(): Observable<string> {
+  public getIsometricData(): Observable<string> {
     return this.isomDataAsObservable.asObservable();
   }
 
@@ -78,7 +77,7 @@ export class A5DeviceManager {
     }
   }
 
-  public async requestIsom(): Promise<void> {
+  public async startIsometric(): Promise<void> {
     await this.writeCharacteristicValue(this.formatCommand(DeviceCommands.ISOM));
     this.deviceState = DeviceState.isometric;
 
@@ -86,23 +85,21 @@ export class A5DeviceManager {
     this.attachListener(characteristic);
   }
 
-  public requestTare(): void {
+  public tare(): void {
     this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TARE));
   }
 
-  public async requestStop(): Promise<void> {
+  public async stop(): Promise<void> {
     await this.writeCharacteristicValue(this.formatCommand(DeviceCommands.STOP));
     this.deviceState = DeviceState.stop;
   }
 
-  public requestEvergreen(): void {
-    this.isEvergreenMode = !this.isEvergreenMode;
-
-    if (this.isEvergreenMode) {
+  public evergreenMode(isEvergreenMode: boolean): void {
+    if (isEvergreenMode) {
       this.evergreenModeTimer = window.setInterval(() => {
         switch (this.deviceState) {
           case DeviceState.stop: case DeviceState.handshake:
-            this.requestStop();
+            this.stop();
             break;
           default:
             break;
@@ -113,7 +110,7 @@ export class A5DeviceManager {
     }
   }
 
-  public async requestDisconnect(): Promise<void> {
+  public async disconnect(): Promise<void> {
     await this.device.gatt.disconnect();
     this.device = undefined;
     this.server = undefined;
