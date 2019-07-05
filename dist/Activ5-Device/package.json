@@ -1,0 +1,27 @@
+{
+  "name": "@h3trika/activ5-device",
+  "author": "Ivo Zhulev",
+  "version": "0.0.5",
+  "devDependencies": {
+    "@angular/common": "7.2.8",
+    "@angular/compiler": "7.2.8",
+    "@angular/compiler-cli": "7.2.8",
+    "@angular/core": "7.2.8",
+    "ng-packagr": "4.7.1",
+    "tsickle": "0.34.3",
+    "typescript": "3.2.2"
+  },
+  "main": "bundles/h3trika-activ5-device.umd.js",
+  "module": "fesm5/h3trika-activ5-device.js",
+  "es2015": "fesm2015/h3trika-activ5-device.js",
+  "esm5": "esm5/h3trika-activ5-device.js",
+  "esm2015": "esm2015/h3trika-activ5-device.js",
+  "fesm5": "fesm5/h3trika-activ5-device.js",
+  "fesm2015": "fesm2015/h3trika-activ5-device.js",
+  "typings": "h3trika-activ5-device.d.ts",
+  "metadata": "h3trika-activ5-device.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}

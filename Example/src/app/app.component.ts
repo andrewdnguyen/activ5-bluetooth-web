@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { A5DeviceManager } from '@h3trika/activ5-device';
+import { A5DeviceManager } from './../../../dist/Activ5-Device';
 
 @Component({
   selector: 'app-root',
