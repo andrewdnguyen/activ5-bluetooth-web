@@ -1,7 +1,7 @@
 <div class="container">
   
       <div *ngIf="device" class="data-container">
-          <p>{{deviceName}}</p>
+          <p>{{device.name}}</p>
           <p>IS{{isomData}}</p>
       </div>
   
@@ -13,7 +13,7 @@
       <button *ngIf="device" (click)="tare()">Request Tare</button>
       <button *ngIf="device" (click)="stop()">Request Stop</button>
       <button *ngIf="device" (click)="isEvergreenMode = !isEvergreenMode; evergreenMode()">
-          {{isEvergreenMode ? 'Swith Off Evergreen' : 'Swith On Evergreen'}}
+          {{isEvergreenMode ? 'Switch Off Evergreen' : 'Switch On Evergreen'}}
       </button>
       <button *ngIf="device" (click)="disconnect()">Disconnect</button>
   

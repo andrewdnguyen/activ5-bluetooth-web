@@ -2,25 +2,26 @@
 import { Observable } from 'rxjs';
 export declare class A5DeviceManager {
     private device;
-    private deviceAsObservable;
+    private disconnectEventAsObservable;
     private server;
     private service;
     private isomDataAsObservable;
     private evergreenModeTimer;
     private characteristics;
     private deviceState;
-    getDevice(): Observable<BluetoothDevice>;
     getIsometricData(): Observable<string>;
-    connect(): Promise<void>;
+    onDisconnect(): Observable<Event>;
+    connect(): Promise<BluetoothDevice>;
     startIsometric(): Promise<void>;
     tare(): void;
     stop(): Promise<void>;
     evergreenMode(isEvergreenMode: boolean): void;
-    disconnect(): Promise<void>;
+    disconnect(): void;
+    private attachDisconnectListener;
     private cacheCharacteristic;
     private writeCharacteristicValue;
     private startNotifications;
-    private attachListener;
+    private attachIsometricListener;
     private parseData;
     private formatCommand;
 }

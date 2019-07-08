@@ -11,24 +11,23 @@ import { A5DeviceManager } from './../../../dist/Activ5-Device';
 export class AppComponent {
 
   constructor(private A5Device: A5DeviceManager ) {
-    this.A5Device.getDevice().subscribe(device => {
-      this.device = device;
-      if (device) {
-        this.deviceName = device.name;
-      }
-    });
-    this.A5Device.getIsometricData().subscribe(data => {
+    this.A5Device.getIsometricData().subscribe((data: string) => {
       this.isomData = data;
+    });
+
+    this.A5Device.onDisconnect().subscribe((event: Event) => {
+      this.device = undefined;
     });
   }
 
   public device: BluetoothDevice;
-  public deviceName: string;
   public isomData: string;
-  public isEvergreenMode = false;
+  public isEvergreenMode: boolean;
 
   public connect(): void {
-    this.A5Device.connect();
+    this.A5Device.connect().then((device: BluetoothDevice) => {
+      this.device = device;
+    });
   }
 
   public startIsometric(): void {

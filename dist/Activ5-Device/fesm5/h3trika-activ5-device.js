@@ -28,20 +28,11 @@ var DeviceState = {
 };
 var A5DeviceManager = /** @class */ (function () {
     function A5DeviceManager() {
-        this.deviceAsObservable = new Subject();
+        this.disconnectEventAsObservable = new Subject();
         this.isomDataAsObservable = new Subject();
         this.characteristics = new Map();
         this.deviceState = DeviceState.disconnected;
     }
-    /**
-     * @return {?}
-     */
-    A5DeviceManager.prototype.getDevice = /**
-     * @return {?}
-     */
-    function () {
-        return this.deviceAsObservable.asObservable();
-    };
     /**
      * @return {?}
      */
@@ -50,6 +41,15 @@ var A5DeviceManager = /** @class */ (function () {
      */
     function () {
         return this.isomDataAsObservable.asObservable();
+    };
+    /**
+     * @return {?}
+     */
+    A5DeviceManager.prototype.onDisconnect = /**
+     * @return {?}
+     */
+    function () {
+        return this.disconnectEventAsObservable.asObservable();
     };
     /**
      * @return {?}
@@ -93,10 +93,10 @@ var A5DeviceManager = /** @class */ (function () {
                         return [4 /*yield*/, this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TVGTIME))];
                     case 9:
                         _c.sent();
-                        this.deviceAsObservable.next(device);
                         this.device = device;
                         this.deviceState = DeviceState.handshake;
-                        _c.label = 10;
+                        this.attachDisconnectListener();
+                        return [2 /*return*/, this.device];
                     case 10: return [2 /*return*/];
                 }
             });
@@ -120,7 +120,7 @@ var A5DeviceManager = /** @class */ (function () {
                         return [4 /*yield*/, this.startNotifications()];
                     case 2:
                         characteristic = _a.sent();
-                        this.attachListener(characteristic);
+                        this.attachIsometricListener(characteristic);
                         return [2 /*return*/];
                 }
             });
@@ -190,20 +190,29 @@ var A5DeviceManager = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.device.gatt.disconnect()];
-                    case 1:
-                        _a.sent();
-                        this.device = undefined;
-                        this.server = undefined;
-                        this.service = undefined;
-                        this.deviceAsObservable.next(undefined);
-                        return [2 /*return*/];
-                }
-            });
-        });
+        this.device.gatt.disconnect();
+    };
+    /**
+     * @private
+     * @return {?}
+     */
+    A5DeviceManager.prototype.attachDisconnectListener = /**
+     * @private
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.device.addEventListener('gattserverdisconnected', (/**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) {
+            _this.disconnectEventAsObservable.next(event);
+            _this.deviceState = DeviceState.disconnected;
+            _this.device = undefined;
+            _this.server = undefined;
+            _this.service = undefined;
+        }));
     };
     /**
      * @private
@@ -262,7 +271,7 @@ var A5DeviceManager = /** @class */ (function () {
      * @param {?} characteristic
      * @return {?}
      */
-    A5DeviceManager.prototype.attachListener = /**
+    A5DeviceManager.prototype.attachIsometricListener = /**
      * @private
      * @param {?} characteristic
      * @return {?}

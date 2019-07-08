@@ -30,7 +30,8 @@ enum DeviceState {
 export class A5DeviceManager {
 
   private device: BluetoothDevice;
-  private deviceAsObservable = new Subject<BluetoothDevice>();
+
+  private disconnectEventAsObservable = new Subject<Event>();
 
   private server: BluetoothRemoteGATTServer;
   private service: BluetoothRemoteGATTService;
@@ -41,15 +42,15 @@ export class A5DeviceManager {
   private characteristics = new Map();
   private deviceState = DeviceState.disconnected;
 
-  public getDevice(): Observable<BluetoothDevice> {
-    return this.deviceAsObservable.asObservable();
-  }
-
   public getIsometricData(): Observable<string> {
     return this.isomDataAsObservable.asObservable();
   }
 
-  public async connect(): Promise<void> {
+  public onDisconnect(): Observable<Event> {
+    return this.disconnectEventAsObservable.asObservable();
+  }
+
+  public async connect(): Promise<BluetoothDevice> {
 
     if (window.navigator && window.navigator.bluetooth) {
       let device: BluetoothDevice;
@@ -71,9 +72,11 @@ export class A5DeviceManager {
 
       await this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TVGTIME));
 
-      this.deviceAsObservable.next(device);
       this.device = device;
       this.deviceState = DeviceState.handshake;
+      this.attachDisconnectListener();
+
+      return this.device;
     }
   }
 
@@ -82,7 +85,7 @@ export class A5DeviceManager {
     this.deviceState = DeviceState.isometric;
 
     const characteristic = await this.startNotifications();
-    this.attachListener(characteristic);
+    this.attachIsometricListener(characteristic);
   }
 
   public tare(): void {
@@ -110,12 +113,18 @@ export class A5DeviceManager {
     }
   }
 
-  public async disconnect(): Promise<void> {
-    await this.device.gatt.disconnect();
-    this.device = undefined;
-    this.server = undefined;
-    this.service = undefined;
-    this.deviceAsObservable.next(undefined);
+  public disconnect(): void {
+    this.device.gatt.disconnect();
+  }
+
+  private attachDisconnectListener(): void {
+    this.device.addEventListener('gattserverdisconnected', (event: Event) => {
+      this.disconnectEventAsObservable.next(event);
+      this.deviceState = DeviceState.disconnected;
+      this.device = undefined;
+      this.server = undefined;
+      this.service = undefined;
+    });
   }
 
   private async cacheCharacteristic(characteristicUuid: string): Promise<void> {
@@ -133,7 +142,7 @@ export class A5DeviceManager {
     return characteristic.startNotifications();
   }
 
-  private attachListener(characteristic: BluetoothRemoteGATTCharacteristic): void {
+  private attachIsometricListener(characteristic: BluetoothRemoteGATTCharacteristic): void {
     characteristic.addEventListener('characteristicvaluechanged', event => {
       const target = event.target as BluetoothRemoteGATTCharacteristic;
       this.parseData(target.value);

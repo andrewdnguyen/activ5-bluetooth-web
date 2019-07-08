@@ -8,14 +8,6 @@ To run the example project clone the repo and run `npm install` and then `npm st
 
 Activ5-Device is an [Angular](https://angular.io) library and an [Angular](https://angular.io) based project is required to run it.
 
-## Installation
-
-Activ5-Device is available through [npm](https://www.npmjs.com).
-
-```typescript
-npm install @h3trika/activ5-device
-```
-
 # Use of framework
 
 ### Framework initialisation
@@ -42,7 +34,7 @@ this.A5Device.connect();
 ### Request Device Data
 Device data is going to be received in the observable function `getDevice`. The data received is of type **BluetoothDevice**.
 ```typescript
-this.A5Device.getDevice().subscribe(device => {
+this.A5Device.getDevice().subscribe((device: BluetoothDevice) => {
   // do something with the data received
 });
 ```
@@ -55,7 +47,7 @@ this.A5Device.startIsometric();
 
 The isometric data is going to be received in the observable function `getIsometricData()`. The data received is in **Newtons**.
 ```typescript
-this.A5Device.getIsometricData().subscribe(data => {
+this.A5Device.getIsometricData().subscribe((data: string) => {
   // do something with the data received
 });
 ```
@@ -66,7 +58,7 @@ In order to save device battery it is recomended to call `stop()` function. That
 ```typescript
 this.A5Device.stop();
 ```
-_NB: After 7 minutes in `stop mode` the device will switch switch off_ .
+_NB: After 7 minutes in `stop mode` the device will switch off_ .
 If you don't want the device to timeout after 7 minutes you can switch on evergreen mode. This will keep the device awake.
 
 ```typescript
@@ -83,6 +75,13 @@ this.A5Device.tare();
 Disconnecting the device happens with calling `disconnect()` function.
 ```typescript 
 this.A5Device.disconnect();
+```
+
+An event will be fired to notify for the disconnect success. 
+```typescript 
+this.A5Device.onDisconnect().subscribe((event: Event) => {
+  // do something
+});
 ```
 
 ## Author

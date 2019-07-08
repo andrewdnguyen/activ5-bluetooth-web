@@ -28,7 +28,7 @@ const DeviceState = {
 };
 class A5DeviceManager {
     constructor() {
-        this.deviceAsObservable = new Subject();
+        this.disconnectEventAsObservable = new Subject();
         this.isomDataAsObservable = new Subject();
         this.characteristics = new Map();
         this.deviceState = DeviceState.disconnected;
@@ -36,14 +36,14 @@ class A5DeviceManager {
     /**
      * @return {?}
      */
-    getDevice() {
-        return this.deviceAsObservable.asObservable();
+    getIsometricData() {
+        return this.isomDataAsObservable.asObservable();
     }
     /**
      * @return {?}
      */
-    getIsometricData() {
-        return this.isomDataAsObservable.asObservable();
+    onDisconnect() {
+        return this.disconnectEventAsObservable.asObservable();
     }
     /**
      * @return {?}
@@ -65,9 +65,10 @@ class A5DeviceManager {
                 yield this.cacheCharacteristic(DeviceUUID.READ);
                 yield this.cacheCharacteristic(DeviceUUID.WRITE);
                 yield this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TVGTIME));
-                this.deviceAsObservable.next(device);
                 this.device = device;
                 this.deviceState = DeviceState.handshake;
+                this.attachDisconnectListener();
+                return this.device;
             }
         });
     }
@@ -80,7 +81,7 @@ class A5DeviceManager {
             this.deviceState = DeviceState.isometric;
             /** @type {?} */
             const characteristic = yield this.startNotifications();
-            this.attachListener(characteristic);
+            this.attachIsometricListener(characteristic);
         });
     }
     /**
@@ -126,13 +127,24 @@ class A5DeviceManager {
      * @return {?}
      */
     disconnect() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.device.gatt.disconnect();
+        this.device.gatt.disconnect();
+    }
+    /**
+     * @private
+     * @return {?}
+     */
+    attachDisconnectListener() {
+        this.device.addEventListener('gattserverdisconnected', (/**
+         * @param {?} event
+         * @return {?}
+         */
+        (event) => {
+            this.disconnectEventAsObservable.next(event);
+            this.deviceState = DeviceState.disconnected;
             this.device = undefined;
             this.server = undefined;
             this.service = undefined;
-            this.deviceAsObservable.next(undefined);
-        });
+        }));
     }
     /**
      * @private
@@ -170,7 +182,7 @@ class A5DeviceManager {
      * @param {?} characteristic
      * @return {?}
      */
-    attachListener(characteristic) {
+    attachIsometricListener(characteristic) {
         characteristic.addEventListener('characteristicvaluechanged', (/**
          * @param {?} event
          * @return {?}
