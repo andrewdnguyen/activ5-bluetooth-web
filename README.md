@@ -4,6 +4,14 @@
 
 To run the example project clone the repo and run **npm install** and then **npm start** from the **Example** directory.
 
+## Installation
+
+**activ5-device** is available through [npm](https://www.npmjs.com).
+
+```typescript
+npm install activ5-device
+```
+
 # Use of framework
 
 ### Framework initialisation
