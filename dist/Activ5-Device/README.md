@@ -25,17 +25,11 @@ constructor(private A5Device: A5DeviceManager ) { }
 
 ### Search and Connect to a device
 You need to search for devices in order to connect. This will open the browser popup for the available bluetooth devices.
-Choose the desired one and click the **Pair** button.
+Choose the desired one and click the **Pair** button. The device data is received in a callback function.
 
 ```typescript
-this.A5Device.connect();
-```
-
-### Request Device Data
-Device data is going to be received in the observable function `getDevice`. The data received is of type **BluetoothDevice**.
-```typescript
-this.A5Device.getDevice().subscribe((device: BluetoothDevice) => {
-  // do something with the data received
+this.A5Device.connect().then((device: BluetoothDevice) => {
+  // do something
 });
 ```
 
@@ -48,7 +42,7 @@ this.A5Device.startIsometric();
 The isometric data is going to be received in the observable function `getIsometricData()`. The data received is in **Newtons**.
 ```typescript
 this.A5Device.getIsometricData().subscribe((data: string) => {
-  // do something with the data received
+  // do something
 });
 ```
 

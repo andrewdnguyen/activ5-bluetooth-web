@@ -6,22 +6,19 @@
     transform: translate(-50%,-50%);
 }
 
+.device-container {
+    margin-bottom: 40px;
+    padding: 10px;
+    border: 1px dashed gray;
+    border-radius: 5px;
+}
+
 .data-container {
     margin-bottom: 30px;
 }
 
-.data-container p {
-    display: inline-block;
-    margin: 0;
- }
-
-.data-container p:first-of-type {
-    width: 140px;
+.data-container span:first-of-type {
     margin-right: 30px;
-}
-
-.data-container p:last-of-type {
-    width: 30px;
 }
 
 button {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { A5DeviceManager } from './../../../dist/Activ5-Device';
+import { A5DeviceManager, A5Device } from 'activ5-device';
 
 @Component({
   selector: 'app-root',
@@ -10,44 +10,46 @@ import { A5DeviceManager } from './../../../dist/Activ5-Device';
 
 export class AppComponent {
 
-  constructor(private A5Device: A5DeviceManager ) {
-    this.A5Device.getIsometricData().subscribe((data: string) => {
-      this.isomData = data;
+  public devices: A5Device[] = [];
+  public isomData: string[] = [];
+
+  public deviceOneIsEvergreenMode: boolean;
+  public deviceTwoIsEvergreenMode: boolean;
+
+  private manager = new A5DeviceManager();
+
+  public connect(index: number): void {
+    this.manager.connect().then((newDevice: A5Device) => {
+      this.devices[index] = newDevice;
+
+      this.devices[index].getIsometricData().subscribe((data: string) => {
+        this.isomData[index] = data;
+      });
+
+      this.devices[index].onDisconnect().subscribe((event: Event) => {
+        this.devices[index] = undefined;
+      });
     });
-
-    this.A5Device.onDisconnect().subscribe((event: Event) => {
-      this.device = undefined;
-    });
   }
 
-  public device: BluetoothDevice;
-  public isomData: string;
-  public isEvergreenMode: boolean;
-
-  public connect(): void {
-    this.A5Device.connect().then((device: BluetoothDevice) => {
-      this.device = device;
-    });
+  public startIsometric(index: number): void {
+    this.devices[index].startIsometric();
   }
 
-  public startIsometric(): void {
-    this.A5Device.startIsometric();
+  public tare(index: number): void {
+    this.devices[index].tare();
   }
 
-  public tare(): void {
-    this.A5Device.tare();
+  public stop(index: number): void {
+    this.devices[index].stop();
   }
 
-  public stop(): void {
-    this.A5Device.stop();
+  public evergreenMode(index: number, isEvergreenMode: boolean): void {
+    this.devices[index].evergreenMode(isEvergreenMode);
   }
 
-  public evergreenMode(): void {
-    this.A5Device.evergreenMode(this.isEvergreenMode);
-  }
-
-  public disconnect(): void {
-    this.A5Device.disconnect();
+  public disconnect(index: number): void {
+    this.devices[index].disconnect();
   }
 
 }

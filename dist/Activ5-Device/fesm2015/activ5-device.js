@@ -1,5 +1,4 @@
 import { __awaiter } from 'tslib';
-import { Injectable, defineInjectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 /**
@@ -27,11 +26,38 @@ const DeviceState = {
     disconnected: 'disconnected',
 };
 class A5DeviceManager {
-    constructor() {
+    /**
+     * @return {?}
+     */
+    connect() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (window.navigator && window.navigator.bluetooth) {
+                /** @type {?} */
+                const device = yield navigator.bluetooth.requestDevice({ filters: [{ services: [DeviceUUID.SERVICE] }] });
+                /** @type {?} */
+                const server = yield device.gatt.connect();
+                /** @type {?} */
+                const service = yield server.getPrimaryService(DeviceUUID.SERVICE);
+                return new A5Device(device, server, service);
+            }
+        });
+    }
+}
+class A5Device {
+    /**
+     * @param {?} device
+     * @param {?} server
+     * @param {?} service
+     */
+    constructor(device, server, service) {
         this.disconnectEventAsObservable = new Subject();
         this.isomDataAsObservable = new Subject();
         this.characteristics = new Map();
         this.deviceState = DeviceState.disconnected;
+        this.device = device;
+        this.server = server;
+        this.service = service;
+        this.init();
     }
     /**
      * @return {?}
@@ -44,33 +70,6 @@ class A5DeviceManager {
      */
     onDisconnect() {
         return this.disconnectEventAsObservable.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    connect() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (window.navigator && window.navigator.bluetooth) {
-                /** @type {?} */
-                let device;
-                if (!this.device) {
-                    device = yield navigator.bluetooth.requestDevice({ filters: [{ services: [DeviceUUID.SERVICE] }] });
-                }
-                if (!this.server) {
-                    this.server = yield device.gatt.connect();
-                }
-                if (!this.service) {
-                    this.service = yield this.server.getPrimaryService(DeviceUUID.SERVICE);
-                }
-                yield this.cacheCharacteristic(DeviceUUID.READ);
-                yield this.cacheCharacteristic(DeviceUUID.WRITE);
-                yield this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TVGTIME));
-                this.device = device;
-                this.deviceState = DeviceState.handshake;
-                this.attachDisconnectListener();
-                return this.device;
-            }
-        });
     }
     /**
      * @return {?}
@@ -128,6 +127,19 @@ class A5DeviceManager {
      */
     disconnect() {
         this.device.gatt.disconnect();
+    }
+    /**
+     * @private
+     * @return {?}
+     */
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.cacheCharacteristic(DeviceUUID.READ);
+            yield this.cacheCharacteristic(DeviceUUID.WRITE);
+            yield this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TVGTIME));
+            this.deviceState = DeviceState.handshake;
+            this.attachDisconnectListener();
+        });
     }
     /**
      * @private
@@ -223,12 +235,6 @@ class A5DeviceManager {
         return dataView;
     }
 }
-A5DeviceManager.decorators = [
-    { type: Injectable, args: [{
-                providedIn: 'root'
-            },] }
-];
-/** @nocollapse */ A5DeviceManager.ngInjectableDef = defineInjectable({ factory: function A5DeviceManager_Factory() { return new A5DeviceManager(); }, token: A5DeviceManager, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -240,6 +246,6 @@ A5DeviceManager.decorators = [
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { A5DeviceManager };
+export { A5DeviceManager, A5Device };
 
-//# sourceMappingURL=h3trika-activ5-device.js.map
+//# sourceMappingURL=activ5-device.js.map

@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs')) :
-    typeof define === 'function' && define.amd ? define('@h3trika/activ5-device', ['exports', '@angular/core', 'rxjs'], factory) :
-    (factory((global.h3trika = global.h3trika || {}, global.h3trika['activ5-device'] = {}),global.ng.core,global.rxjs));
-}(this, (function (exports,i0,rxjs) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
+    typeof define === 'function' && define.amd ? define('activ5-device', ['exports', 'rxjs'], factory) :
+    (factory((global['activ5-device'] = {}),global.rxjs));
+}(this, (function (exports,rxjs) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
@@ -132,29 +132,7 @@
     };
     var A5DeviceManager = /** @class */ (function () {
         function A5DeviceManager() {
-            this.disconnectEventAsObservable = new rxjs.Subject();
-            this.isomDataAsObservable = new rxjs.Subject();
-            this.characteristics = new Map();
-            this.deviceState = DeviceState.disconnected;
         }
-        /**
-         * @return {?}
-         */
-        A5DeviceManager.prototype.getIsometricData = /**
-         * @return {?}
-         */
-            function () {
-                return this.isomDataAsObservable.asObservable();
-            };
-        /**
-         * @return {?}
-         */
-        A5DeviceManager.prototype.onDisconnect = /**
-         * @return {?}
-         */
-            function () {
-                return this.disconnectEventAsObservable.asObservable();
-            };
         /**
          * @return {?}
          */
@@ -163,57 +141,62 @@
          */
             function () {
                 return __awaiter(this, void 0, void 0, function () {
-                    var device, _a, _b;
-                    return __generator(this, function (_c) {
-                        switch (_c.label) {
+                    var device, server, service;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
                             case 0:
                                 if (!(window.navigator && window.navigator.bluetooth))
-                                    return [3 /*break*/, 10];
-                                device = void 0;
-                                if (!!this.device)
-                                    return [3 /*break*/, 2];
+                                    return [3 /*break*/, 4];
                                 return [4 /*yield*/, navigator.bluetooth.requestDevice({ filters: [{ services: [DeviceUUID.SERVICE] }] })];
                             case 1:
-                                device = _c.sent();
-                                _c.label = 2;
-                            case 2:
-                                if (!!this.server)
-                                    return [3 /*break*/, 4];
-                                _a = this;
+                                device = _a.sent();
                                 return [4 /*yield*/, device.gatt.connect()];
+                            case 2:
+                                server = _a.sent();
+                                return [4 /*yield*/, server.getPrimaryService(DeviceUUID.SERVICE)];
                             case 3:
-                                _a.server = _c.sent();
-                                _c.label = 4;
-                            case 4:
-                                if (!!this.service)
-                                    return [3 /*break*/, 6];
-                                _b = this;
-                                return [4 /*yield*/, this.server.getPrimaryService(DeviceUUID.SERVICE)];
-                            case 5:
-                                _b.service = _c.sent();
-                                _c.label = 6;
-                            case 6: return [4 /*yield*/, this.cacheCharacteristic(DeviceUUID.READ)];
-                            case 7:
-                                _c.sent();
-                                return [4 /*yield*/, this.cacheCharacteristic(DeviceUUID.WRITE)];
-                            case 8:
-                                _c.sent();
-                                return [4 /*yield*/, this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TVGTIME))];
-                            case 9:
-                                _c.sent();
-                                this.device = device;
-                                this.deviceState = DeviceState.handshake;
-                                this.attachDisconnectListener();
-                                return [2 /*return*/, this.device];
-                            case 10: return [2 /*return*/];
+                                service = _a.sent();
+                                return [2 /*return*/, new A5Device(device, server, service)];
+                            case 4: return [2 /*return*/];
                         }
                     });
                 });
             };
+        return A5DeviceManager;
+    }());
+    var A5Device = /** @class */ (function () {
+        function A5Device(device, server, service) {
+            this.disconnectEventAsObservable = new rxjs.Subject();
+            this.isomDataAsObservable = new rxjs.Subject();
+            this.characteristics = new Map();
+            this.deviceState = DeviceState.disconnected;
+            this.device = device;
+            this.server = server;
+            this.service = service;
+            this.init();
+        }
         /**
          * @return {?}
          */
-        A5DeviceManager.prototype.startIsometric = /**
+        A5Device.prototype.getIsometricData = /**
+         * @return {?}
+         */
+            function () {
+                return this.isomDataAsObservable.asObservable();
+            };
+        /**
+         * @return {?}
+         */
+        A5Device.prototype.onDisconnect = /**
+         * @return {?}
+         */
+            function () {
+                return this.disconnectEventAsObservable.asObservable();
+            };
+        /**
+         * @return {?}
+         */
+        A5Device.prototype.startIsometric = /**
          * @return {?}
          */
             function () {
@@ -237,7 +220,7 @@
         /**
          * @return {?}
          */
-        A5DeviceManager.prototype.tare = /**
+        A5Device.prototype.tare = /**
          * @return {?}
          */
             function () {
@@ -246,7 +229,7 @@
         /**
          * @return {?}
          */
-        A5DeviceManager.prototype.stop = /**
+        A5Device.prototype.stop = /**
          * @return {?}
          */
             function () {
@@ -266,7 +249,7 @@
          * @param {?} isEvergreenMode
          * @return {?}
          */
-        A5DeviceManager.prototype.evergreenMode = /**
+        A5Device.prototype.evergreenMode = /**
          * @param {?} isEvergreenMode
          * @return {?}
          */
@@ -293,7 +276,7 @@
         /**
          * @return {?}
          */
-        A5DeviceManager.prototype.disconnect = /**
+        A5Device.prototype.disconnect = /**
          * @return {?}
          */
             function () {
@@ -303,7 +286,35 @@
          * @private
          * @return {?}
          */
-        A5DeviceManager.prototype.attachDisconnectListener = /**
+        A5Device.prototype.init = /**
+         * @private
+         * @return {?}
+         */
+            function () {
+                return __awaiter(this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, this.cacheCharacteristic(DeviceUUID.READ)];
+                            case 1:
+                                _a.sent();
+                                return [4 /*yield*/, this.cacheCharacteristic(DeviceUUID.WRITE)];
+                            case 2:
+                                _a.sent();
+                                return [4 /*yield*/, this.writeCharacteristicValue(this.formatCommand(DeviceCommands.TVGTIME))];
+                            case 3:
+                                _a.sent();
+                                this.deviceState = DeviceState.handshake;
+                                this.attachDisconnectListener();
+                                return [2 /*return*/];
+                        }
+                    });
+                });
+            };
+        /**
+         * @private
+         * @return {?}
+         */
+        A5Device.prototype.attachDisconnectListener = /**
          * @private
          * @return {?}
          */
@@ -325,7 +336,7 @@
          * @param {?} characteristicUuid
          * @return {?}
          */
-        A5DeviceManager.prototype.cacheCharacteristic = /**
+        A5Device.prototype.cacheCharacteristic = /**
          * @private
          * @param {?} characteristicUuid
          * @return {?}
@@ -349,7 +360,7 @@
          * @param {?} value
          * @return {?}
          */
-        A5DeviceManager.prototype.writeCharacteristicValue = /**
+        A5Device.prototype.writeCharacteristicValue = /**
          * @private
          * @param {?} value
          * @return {?}
@@ -363,7 +374,7 @@
          * @private
          * @return {?}
          */
-        A5DeviceManager.prototype.startNotifications = /**
+        A5Device.prototype.startNotifications = /**
          * @private
          * @return {?}
          */
@@ -377,7 +388,7 @@
          * @param {?} characteristic
          * @return {?}
          */
-        A5DeviceManager.prototype.attachIsometricListener = /**
+        A5Device.prototype.attachIsometricListener = /**
          * @private
          * @param {?} characteristic
          * @return {?}
@@ -398,7 +409,7 @@
          * @param {?} data
          * @return {?}
          */
-        A5DeviceManager.prototype.parseData = /**
+        A5Device.prototype.parseData = /**
          * @private
          * @param {?} data
          * @return {?}
@@ -415,7 +426,7 @@
          * @param {?} type
          * @return {?}
          */
-        A5DeviceManager.prototype.formatCommand = /**
+        A5Device.prototype.formatCommand = /**
          * @private
          * @param {?} type
          * @return {?}
@@ -432,13 +443,7 @@
                 dataView.setUint8(type.length + 1, 25);
                 return dataView;
             };
-        A5DeviceManager.decorators = [
-            { type: i0.Injectable, args: [{
-                        providedIn: 'root'
-                    },] }
-        ];
-        /** @nocollapse */ A5DeviceManager.ngInjectableDef = i0.defineInjectable({ factory: function A5DeviceManager_Factory() { return new A5DeviceManager(); }, token: A5DeviceManager, providedIn: "root" });
-        return A5DeviceManager;
+        return A5Device;
     }());
 
     /**
@@ -452,9 +457,10 @@
      */
 
     exports.A5DeviceManager = A5DeviceManager;
+    exports.A5Device = A5Device;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-//# sourceMappingURL=h3trika-activ5-device.umd.js.map
+//# sourceMappingURL=activ5-device.umd.js.map
