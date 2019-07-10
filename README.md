@@ -76,4 +76,4 @@ h3trika ivo.zhulev@gmail.com
 
 ## License
 
-activ5-device is available under the MIT license. See the LICENSE file for more info.
+**activ5-device** is available under the MIT license. See the LICENSE file for more info.
