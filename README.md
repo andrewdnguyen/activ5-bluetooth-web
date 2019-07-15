@@ -1,18 +1,23 @@
-# activ5-device
+# activ5-bluetooth-web library and Example App
 
-## Example
-
-To run the example project clone the repo and run **npm install** and then **npm start** from the **Example** directory.
+## Description
+Library to provide Bluetooth connection and Isometric data retrieval from one or two Activ5 devices.
 
 ## Installation
 
-**activ5-device** is available through [npm](https://www.npmjs.com).
+**activ5-device** is available through [npm](https://www.npmjs.com)
 
-```typescript
-npm install activ5-device
-```
+Steps:
+1. To perform installation under Windows or MAC OS, you need to install npm and node.js.
+2. Clone the repository activ5-bluetooth-web or download the zip file
+3. To install the library, run: `npm install activ5-device`
+4. To install the Example App from folder "activ5-bluetooth-web\Example",
+  run: `npm install`
+  then run: `npm start`
 
-# Use of framework
+5. Open http://localhost:4200 in the web browser
+
+## Use of framework
 
 ### Framework initialisation
 In order to initialize the framework you need to import it.
@@ -60,7 +65,7 @@ this.device.evergreenMode(true);
 ```
 
 ### Execute tare
-This is executing **tare** command on the device.
+This is executing **tare** command on the device. During "tare" execution, the user should not apply any force to the Activ5 device.
 ```typescript 
 this.device.tare();
 ```
@@ -79,9 +84,8 @@ this.device.onDisconnect().subscribe((event: Event) => {
 ```
 
 ## Author
-
-h3trika ivo.zhulev@gmail.com
+Ivo Zhulev, contact: service@activbody.com
 
 ## License
 
-**activ5-device** is available under the MIT license. See the LICENSE file for more info.
+**Example App source code** is available under the Apache license. See the LICENSE file for more info.
