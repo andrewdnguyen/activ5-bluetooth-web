@@ -46,7 +46,7 @@ export class A5Device {
     this.init();
   }
 
-  private device: BluetoothDevice;
+  public device: BluetoothDevice;
   private server: BluetoothRemoteGATTServer;
   private service: BluetoothRemoteGATTService;
 
@@ -86,7 +86,8 @@ export class A5Device {
     if (isEvergreenMode) {
       this.evergreenModeTimer = window.setInterval(() => {
         switch (this.deviceState) {
-          case DeviceState.stop: case DeviceState.handshake:
+          case DeviceState.stop:
+          case DeviceState.handshake:
             this.stop();
             break;
           default:

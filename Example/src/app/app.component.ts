@@ -20,6 +20,14 @@ export class AppComponent {
 
   public connect(index: number): void {
     this.manager.connect().then((newDevice: A5Device) => {
+      const name = newDevice.device.name;
+
+      for (let i = 0; i < this.devices.length; i++) {
+        if (this.devices[i] && this.devices[i].device.name === name) {
+          this.devices[i] = undefined;
+        }
+      }
+
       this.devices[index] = newDevice;
 
       this.devices[index].getIsometricData().subscribe((data: string) => {
