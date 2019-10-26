@@ -32,6 +32,14 @@ export class AppComponent {
 
       this.devices[index].getIsometricData().subscribe((data: string) => {
         this.isomData[index] = data;
+        let currentInt = parseInt(this.isomData[index]);
+        let lastInt = 0;
+        if(index > 0){
+          lastInt = parseInt(this.isomData[index-1]);
+        }
+        if(lastInt === 0 && currentInt !== 0 ){
+          console.log("button click!")
+        }
       });
 
       this.devices[index].onDisconnect().subscribe((event: Event) => {
