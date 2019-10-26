@@ -1,8 +1,8 @@
 <div class="container">
 
 
-    <button id="beat1">First Button</button>
-    <button id="beat2">Second Button</button>
+    <button #beat1 id="beat1" (click)="registerOne()">First Button</button>
+    <button #beat2 id="beat2" (click)="registerTwo()">Second Button</button>
     <!-- Scanning For Device Button -->
     <button *ngIf="!devices[0]" (click)="connect(0)">Search for Device 1</button>
 

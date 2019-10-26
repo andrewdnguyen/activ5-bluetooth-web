@@ -18,6 +18,14 @@ export class AppComponent {
 
   private manager = new A5DeviceManager();
 
+  public registerOne() {
+    console.log("Clicked button 1!");
+  }
+
+  public registerTwo() {
+    console.log("Clicked button 2!");
+  }
+
   public connect(index: number): void {
     this.manager.connect().then((newDevice: A5Device) => {
       const name = newDevice.device.name;
@@ -30,15 +38,23 @@ export class AppComponent {
 
       this.devices[index] = newDevice;
 
+      let currentInt1 = 0;
+      let lastInt1 = 0;
+      let currentInt2 = 0;
+      let lastInt2 = 0;
       this.devices[index].getIsometricData().subscribe((data: string) => {
         this.isomData[index] = data;
-        let currentInt = parseInt(this.isomData[index]);
-        let lastInt = 0;
-        if(index > 0){
-          lastInt = parseInt(this.isomData[index-1]);
+        lastInt1 = currentInt1
+        currentInt1 = parseInt(this.isomData[0]);
+        let difference1 = currentInt1 - lastInt1;
+        if(difference1 > 5){
+          this.registerOne();
         }
-        if(lastInt === 0 && currentInt !== 0 ){
-          console.log("button click!")
+        lastInt2 = currentInt2
+        currentInt2 = parseInt(this.isomData[1]);
+        let difference2 = currentInt2 - lastInt2;
+        if(difference2 > 5){
+          this.registerTwo();
         }
       });
 
