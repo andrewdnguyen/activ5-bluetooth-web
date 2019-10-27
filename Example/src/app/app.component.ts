@@ -12,24 +12,65 @@ export class AppComponent {
 
   public devices: A5Device[] = [];
   public isomData: string[] = [];
+  public timeClicked1: number[] = [];
+  public timeClicked2: number[] = [];
 
   public deviceOneIsEvergreenMode: boolean;
   public deviceTwoIsEvergreenMode: boolean;
 
   private manager = new A5DeviceManager();
 
+  public record = false;
+  public displayResult1 = false;
+
   public sensitivityValue = 0;
+  public timeBetweenBeats = 500;
+  public results = -1;
 
   formatLabel(value: number) {
     return value;
   }
 
+  showResults1(){
+    let total = 0; 
+    console.log(this.timeClicked1);
+    for(let i = 1; i < this.timeClicked1.length-1; i++){
+      console.log(this.timeClicked1[i]);
+      let difference = this.timeClicked1[i] - this.timeClicked1[i-1];
+      total = total + difference;
+      //console.log(total);
+    }
+    let average = total / this.timeClicked1.length;
+    this.results = average;
+    this.displayResult1 = true
+  }
+
+  public startRecording(){
+    this.record = true;
+  }
+
+  public stopRecording(){
+    this.record = false;
+  }
+
   public registerOne() {
-    console.log("Clicked button 1!");
+    let date1 = new Date();
+    let time1 = date1.getTime();
+    console.log(time1);
+    console.log(typeof(time1));
+    if(this.record === true){
+      this.timeClicked1.push(time1);
+    }
+
   }
 
   public registerTwo() {
     console.log("Clicked button 2!");
+    let date2 = new Date();
+    let time2 = date2.getTime();
+    if(this.record === true){
+      this.timeClicked2.push(time2);
+    }
   }
 
   public updateSensitivity(event: any) {
