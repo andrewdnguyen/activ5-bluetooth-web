@@ -24,6 +24,7 @@ export class AppComponent {
   public record = false;
   public displayResult1 = false;
   public practiceStuff = false;
+  public isHigh = false;
 
 
   public sensitivityValue = 0;
@@ -108,9 +109,7 @@ export class AppComponent {
         if(difference1 > (100 - this.sensitivityValue)){
           //if change is large enough, record pressure
           this.pressureList.push(currentInt1);
-          this.currentIso = currentInt1;
-          //Use this.currentIso to determine the background color could be if statements
-          if (this.currentIso > 556)
+          this.currentIso = currentInt1;          
           console.log(this.sensitivityValue);
           this.registerOne();
         } 

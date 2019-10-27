@@ -37,6 +37,15 @@
             <span>{{devices[0].device.name}}</span>
             <span>IS{{isomData[0]}}</span>
         </div>
+        <div *ngIf="isomData[0] > 556">
+            <h3>TOO HARD</h3>
+        </div>
+        <div *ngIf="isomData[0] < 444">
+            <h3>TOO LOW</h3>
+        </div>
+        <div *ngIf="isomData[0] < 444 && isomData[0] > 556]">
+            <h3>PERFECT</h3>
+        </div>
 
         <button mat-raised-button (click)="startIsometric(0)">Request Isometric</button>
         
@@ -56,8 +65,10 @@
             <span>{{devices[1].device.name}}</span>
             <span>IS{{isomData[1]}}</span>
         </div>
+      
 
         <button mat-raised-button (click)="startIsometric(1)">Request Isometric</button>
+        
         <!-- <button mat-raised-button (click)="tare(1)">Request Tare</button>
         <button mat-raised-button (click)="stop(1)">Request Stop</button> -->
         <!-- <button mat-raised-button (click)="deviceTwoIsEvergreenMode = !deviceTwoIsEvergreenMode; evergreenMode(1, deviceTwoIsEvergreenMode)">
