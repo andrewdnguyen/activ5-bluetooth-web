@@ -20,13 +20,13 @@
     
     <div [hidden]="!practiceStuff">
 
-
+<!--
     <mat-slider
     thumbLabel
     [displayWith]="formatLabel"
     tickInterval="1"
     min="1"
-    max="100" (input)="updateSensitivity($event)"></mat-slider>
+    max="100" (input)="updateSensitivity($event)"></mat-slider>-->
      <!-- Scanning For Device Button -->
     <button mat-raised-button *ngIf="!devices[0]" (click)="connect(0)">Connect Device</button>
 
@@ -43,7 +43,7 @@
         <div *ngIf="isomData[0] < 444">
             <h3>TOO LOW</h3>
         </div>
-        <div *ngIf="isomData[0] < 444 && isomData[0] > 556">
+        <div *ngIf="isomData[0] > 444 && isomData[0] < 556">
             <h3>PERFECT</h3>
         </div>
 

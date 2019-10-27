@@ -27,7 +27,7 @@ export class AppComponent {
   public isHigh = false;
 
 
-  public sensitivityValue = 0;
+  public sensitivityValue = 100;
   public timeBetweenBeats = 500/0.5;
   public results = -1;
   public compressionAverage = -1;
@@ -84,7 +84,7 @@ export class AppComponent {
 
 
   public updateSensitivity(event: any) {
-    this.sensitivityValue = event.value;
+    this.sensitivityValue = 100;
   }
 
   public connect(index: number): void {
