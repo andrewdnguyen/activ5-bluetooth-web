@@ -18,6 +18,12 @@ export class AppComponent {
 
   private manager = new A5DeviceManager();
 
+  public sensitivityValue = 0;
+
+  formatLabel(value: number) {
+    return value;
+  }
+
   public registerOne() {
     console.log("Clicked button 1!");
   }
@@ -47,13 +53,14 @@ export class AppComponent {
         lastInt1 = currentInt1
         currentInt1 = parseInt(this.isomData[0]);
         let difference1 = currentInt1 - lastInt1;
-        if(difference1 > 5){
+        if(difference1 > this.sensitivityValue){
+          console.log(this.sensitivityValue);
           this.registerOne();
         }
         lastInt2 = currentInt2
         currentInt2 = parseInt(this.isomData[1]);
         let difference2 = currentInt2 - lastInt2;
-        if(difference2 > 5){
+        if(difference2 > this.sensitivityValue){
           this.registerTwo();
         }
       });
