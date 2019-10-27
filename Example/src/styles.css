@@ -2,3 +2,20 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+button.mat-raised-button.mat-button-base {
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+button.mat-raised-button.mat-button-base {
+    border-color: #ed1c24;
+    color: red;
+}
+
+button.mat-raised-button.mat-button-base:hover {
+    background-color: #ed1c24;
+    color: white;
+}
+

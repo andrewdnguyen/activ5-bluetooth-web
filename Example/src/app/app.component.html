@@ -1,11 +1,25 @@
 <div class="container">
+    
+    <img class="img-responsive" src="assets/images/rblogo.png" width="300" height="300">
+    <br>
+    <br>
+    <br>
+    <br>
+    <button mat-raised-button  (click)="showPractice()">Chest Compression Practice</button>
 
+
+    
+    
     <div [hidden]="!displayResult1">
-        <h1>Your average timing: {{results}} </h1>
-        <h3>Your goal between compressions was: {{timeBetweenBeats}}</h3>
-        <h3>Your average pressure: {{compressionAverage}}</h3>
-        <h3>All of your compression pressures listed: {{pressureList}}</h3>
+        <h5>Your rate of compression: {{results}} compressions per minute </h5>
+        <h5>Ideal rate of compressions: 100 - 120 compressions per minute</h5>
+        <h5>Your average pressure: {{compressionAverage}} Newtons</h5>
     </div>
+    
+    
+    
+    <div [hidden]="!practiceStuff">
+
 
     <mat-slider
     thumbLabel
@@ -13,14 +27,10 @@
     tickInterval="1"
     min="1"
     max="100" (input)="updateSensitivity($event)"></mat-slider>
-    <button mat-raised-button #beat1 id="start" (click)="startRecording()">Start Recording</button>
-    <button mat-raised-button #beat1 id="stop" (click)="stopRecording()">Stop Recording</button>
-    <button mat-raised-button #beat1 id="results" (click)="showResults1()">Show Results and Reset</button>
-    <button mat-raised-button #beat1 id="beat1" (click)="registerOne()">First Button</button>
-    <button mat-raised-button #beat2 id="beat2" (click)="registerTwo()">Second Button</button>
-    <!-- Scanning For Device Button -->
-    <button mat-raised-button *ngIf="!devices[0]" (click)="connect(0)">Search for Device 1</button>
+     <!-- Scanning For Device Button -->
+    <button mat-raised-button *ngIf="!devices[0]" (click)="connect(0)">Connect Device</button>
 
+    
     <!-- Device Data & Buttons -->
     <div *ngIf="devices[0]" class="device-container">
         <div class="data-container">
@@ -29,16 +39,16 @@
         </div>
 
         <button mat-raised-button (click)="startIsometric(0)">Request Isometric</button>
-        <!-- <button mat-raised-button (click)="tare(0)">Request Tare</button>
-        <button mat-raised-button (click)="stop(0)">Request Stop</button>
-        <button mat-raised-button (click)="deviceOneIsEvergreenMode = !deviceOneIsEvergreenMode; evergreenMode(0, deviceOneIsEvergreenMode)">
-            {{deviceOneIsEvergreenMode ? 'Switch Off Evergreen' : 'Switch On Evergreen'}}
-        </button> -->
+        
         <button mat-raised-button (click)="disconnect(0)">Disconnect</button>
     </div>
+    
+    <button mat-raised-button #beat1 id="start" (click)="startRecording()">Start Recording</button>
+    <button mat-raised-button #beat1 id="stop" (click)="stopRecording()">Stop Recording</button>
+    <button mat-raised-button #beat1 id="results" (click)="showResults1()">Show Results and Reset</button>
+    
 
-    <!-- Scanning For Device Button
-    <button mat-raised-button *ngIf="!devices[1]" (click)="connect(1)">Search for Device 2</button> -->
+    </div>
 
     <!-- Device Data & Buttons -->
     <div *ngIf="devices[1]" class="device-container">
