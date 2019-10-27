@@ -14,11 +14,13 @@ export class AppComponent {
   public isomData: string[] = [];
   public timeClicked1: number[] = [];
   public timeClicked2: number[] = [];
+  public pressureList: number[] = [];
 
   public deviceOneIsEvergreenMode: boolean;
   public deviceTwoIsEvergreenMode: boolean;
 
   private manager = new A5DeviceManager();
+  public currentIso: number;
 
   public record = false;
   public displayResult1 = false;
@@ -26,6 +28,7 @@ export class AppComponent {
   public sensitivityValue = 0;
   public timeBetweenBeats = 500;
   public results = -1;
+  public compressionAverage = -1;
 
   formatLabel(value: number) {
     return value;
@@ -40,6 +43,12 @@ export class AppComponent {
       total = total + difference;
       //console.log(total);
     }
+    let totalCompression = 0;
+    for(let x = 0; x < this.pressureList.length; x++){
+      totalCompression = totalCompression + this.pressureList[x];
+    }
+    let compAverage = totalCompression / this.pressureList.length;
+    this.compressionAverage = compAverage;
     let average = total / this.timeClicked1.length;
     this.results = average;
     this.displayResult1 = true
@@ -99,6 +108,10 @@ export class AppComponent {
         currentInt1 = parseInt(this.isomData[0]);
         let difference1 = currentInt1 - lastInt1;
         if(difference1 > (100 - this.sensitivityValue)){
+          //if change is large enough, record pressure
+          //this.pressureList.push(currentInt1);
+          //this.currentIso = currentInt1;
+          //Use this.currentIso to determine the background color could be if statements
           console.log(this.sensitivityValue);
           this.registerOne();
         }
