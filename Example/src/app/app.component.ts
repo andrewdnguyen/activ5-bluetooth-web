@@ -32,6 +32,10 @@ export class AppComponent {
     console.log("Clicked button 2!");
   }
 
+  public updateSensitivity(event: any) {
+    this.sensitivityValue = event.value;
+  }
+
   public connect(index: number): void {
     this.manager.connect().then((newDevice: A5Device) => {
       const name = newDevice.device.name;
@@ -53,14 +57,14 @@ export class AppComponent {
         lastInt1 = currentInt1
         currentInt1 = parseInt(this.isomData[0]);
         let difference1 = currentInt1 - lastInt1;
-        if(difference1 > this.sensitivityValue){
+        if(difference1 > (100 - this.sensitivityValue)){
           console.log(this.sensitivityValue);
           this.registerOne();
         }
         lastInt2 = currentInt2
         currentInt2 = parseInt(this.isomData[1]);
         let difference2 = currentInt2 - lastInt2;
-        if(difference2 > this.sensitivityValue){
+        if(difference2 > (100 - this.sensitivityValue)) { 
           this.registerTwo();
         }
       });
